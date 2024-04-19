@@ -1,5 +1,6 @@
 ﻿using APBD.Database;
 using APBD.Models;
+using APBD.Services;
 
 namespace APBD.Endpoints;
 
@@ -7,29 +8,42 @@ public static class AnimalEndpoints
 {
     public static void MapAnimalEndpoints(this WebApplication app)
     {
+        AnimalService animalService = new AnimalService();
+        
         app.MapGet("/animals", () =>
         {
-            // 200 - Ok
-            // 400 - Bad Request
-            // 401 - Unauthorized
-            // 403 - Forbidden
-            // 404 - Not found
-            // 500 - Internal Server Error
-
-            var animals = StaticData.animals;
-            
+            var animals = animalService.GetAllAnimals();
             return Results.Ok(animals);
         });
 
         app.MapGet("/animals/{id}", (int id) =>
         {
-            return Results.Ok(id);
+            var animal = animalService.GetAnimalById(id);
+            if (animal == null)
+                return Results.NotFound();
+
+            return Results.Ok(animal);
         });
 
         app.MapPost("/animals", (Animal animal) =>
         {
-            // 201 - Created
-            return Results.Created("", animal);
+            var addedAnimal = animalService.AddAnimal(animal);
+            return Results.Created($"/animals/{addedAnimal.Id}", addedAnimal);
+        });
+
+        app.MapPut("/animals/{id}", (int id, Animal animal) =>
+        {
+            if (id != animal.Id)
+                return Results.BadRequest();
+
+            animalService.UpdateAnimal(animal);
+            return Results.NoContent();
+        });
+
+        app.MapDelete("/animals/{id}", (int id) =>
+        {
+            animalService.DeleteAnimal(id);
+            return Results.NoContent();
         });
     }
 }
