@@ -8,7 +8,7 @@ public static class VisitEndpoints
     public static void MapVisitEndpoints(this WebApplication app)
     {
         VisitService visitService = new VisitService();
-        
+
         app.MapGet("/visits/{animalId}", (int animalId) =>
         {
             var visits = visitService.GetVisitsByAnimalId(animalId);

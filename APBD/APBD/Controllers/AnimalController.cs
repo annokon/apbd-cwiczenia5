@@ -23,6 +23,7 @@ public class AnimalController : ControllerBase
         {
             return NotFound();
         }
+
         return Ok(animal);
     }
 
@@ -42,6 +43,7 @@ public class AnimalController : ControllerBase
         {
             return NotFound();
         }
+
         existingAnimal.Name = animal.Name;
         existingAnimal.Category = animal.Category;
         existingAnimal.Weight = animal.Weight;
@@ -57,6 +59,7 @@ public class AnimalController : ControllerBase
         {
             return NotFound();
         }
+
         _animals.Remove(animal);
         return NoContent();
     }

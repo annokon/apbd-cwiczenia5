@@ -9,7 +9,7 @@ public static class AnimalEndpoints
     public static void MapAnimalEndpoints(this WebApplication app)
     {
         AnimalService animalService = new AnimalService();
-        
+
         app.MapGet("/animals", () =>
         {
             var animals = animalService.GetAllAnimals();
